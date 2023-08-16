@@ -8,11 +8,12 @@ export const isAuthenticated = async (
   next: express.NextFunction
 ) => {
   try {
-    const sessionToken = req.cookies["USER-AUTH"];
-    if (!sessionToken) {
+    const authorizationHeader = req.headers["authorization"];
+    if (!authorizationHeader || !authorizationHeader.startsWith("Bearer ")) {
       return res.sendStatus(403);
     }
 
+    const sessionToken = authorizationHeader.slice(7); // Remove "Bearer " prefix
     const existingUser = await getUserBySessionToken(sessionToken);
 
     if (!existingUser) {
