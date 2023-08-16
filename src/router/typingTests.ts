@@ -6,17 +6,24 @@ import {
   deleteTypingTest,
   updateTypingTest,
   getAllTypingTestsByDifficulty,
+  retrieveRandomTypingTestByDifficulty,
   retrieveTypingTestById,
   retrieveTypingTestByTitle,
 } from "../controllers/typingTests";
+import { retrieveScoresByTypingTest } from "../controllers/scores";
 import { isAuthenticated } from "../middleware";
 
 export default (router: express.Router) => {
   router.get("/typingtests", isAuthenticated, getAllTypingTests);
   router.get(
-    "/typingtests/difficulty/:difficulty",
+    "/typingtests/:difficulty",
     isAuthenticated,
     getAllTypingTestsByDifficulty
+  );
+  router.get(
+    "/typingtests/:difficulty/random",
+    isAuthenticated,
+    retrieveRandomTypingTestByDifficulty
   );
   router.get("/typingtests/id/:id", isAuthenticated, retrieveTypingTestById);
   router.get(
@@ -27,4 +34,9 @@ export default (router: express.Router) => {
   router.post("/typingtests/add", isAuthenticated, createNewTypingTest);
   router.patch("/typingtests/:id", isAuthenticated, updateTypingTest);
   router.delete("/typingtests/:id", isAuthenticated, deleteTypingTest);
+  router.get(
+    "/typingtests/:id/scores",
+    isAuthenticated,
+    retrieveScoresByTypingTest
+  );
 };
