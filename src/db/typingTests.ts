@@ -19,6 +19,11 @@ export const getTypingTestsByDifficulty = (difficulty: string) =>
   typingTestModel.find({ difficulty });
 export const getTypingTestByTitle = (title: string) =>
   typingTestModel.findOne({ title });
+export const getRandomTypingTestByDifficulty = (difficulty: string) =>
+  typingTestModel.find({ difficulty }).then((typingTests) => {
+    const randomIndex = Math.floor(Math.random() * typingTests.length);
+    return typingTests[randomIndex];
+  });
 export const createTypingTest = (values: Record<string, any>) =>
   new typingTestModel(values)
     .save()
