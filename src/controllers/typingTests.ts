@@ -6,6 +6,7 @@ import {
   getTypingTests,
   createTypingTest,
   getTypingTestsByDifficulty,
+  getRandomTypingTestByDifficulty,
 } from "../db/typingTests";
 
 export const getAllTypingTests = async (
@@ -29,6 +30,21 @@ export const getAllTypingTestsByDifficulty = async (
     const { difficulty } = req.params;
     const typingTests = await getTypingTestsByDifficulty(difficulty);
     return res.status(200).json(typingTests);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(400);
+  }
+};
+
+export const retrieveRandomTypingTestByDifficulty = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  try {
+    const { difficulty } = req.params;
+    console.log("got here baby");
+    const typingTest = await getRandomTypingTestByDifficulty(difficulty);
+    return res.status(200).json(typingTest);
   } catch (error) {
     console.log(error);
     return res.sendStatus(400);
@@ -85,10 +101,12 @@ export const createNewTypingTest = async (
       difficulty,
       createdBy: id,
     });
+
     const testData = {
       title: typingTest.title,
       text: typingTest.text,
       difficulty: typingTest.difficulty,
+      id: typingTest._id,
     };
 
     return res.status(201).json(testData).end();
