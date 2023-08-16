@@ -2,6 +2,7 @@ import express from "express";
 import { getUserByEmail, createUser } from "../db/users";
 import { random, authentication } from "../helpers";
 import { Document } from "mongoose";
+import { setCookie } from "./cookieUtils";
 
 export interface UserDocument extends Document {
   username: string;
@@ -40,9 +41,8 @@ export const login = async (req: express.Request, res: express.Response) => {
     );
     await user.save();
 
-    res.cookie("USER-AUTH", user.authentication.sessionToken, {
-      domain: "localhost",
-      path: "/",
+    setCookie(res, "USER-AUTH", user.authentication.sessionToken, {
+      httpOnly: true,
     });
 
     const userData = {
