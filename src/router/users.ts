@@ -5,6 +5,7 @@ import {
   retrieveScoresByUser,
   retrieveScoresByUserAndTypingTest,
   retrieveScoresByUserAndTypingTestAndDate,
+  retrieveScoresByUserAndDifficulty,
 } from "../controllers/scores";
 import { isAuthenticated, isOwner } from "../middleware";
 
@@ -27,5 +28,10 @@ export default (router: express.Router) => {
     "/users/:userId/typingtests/:typingTestId/scores/:date",
     isAuthenticated,
     retrieveScoresByUserAndTypingTestAndDate
+  );
+  router.get(
+    "/users/:username/scores/:difficulty",
+    isAuthenticated,
+    retrieveScoresByUserAndDifficulty
   );
 };
