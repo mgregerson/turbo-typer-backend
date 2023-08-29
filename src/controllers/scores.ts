@@ -5,6 +5,7 @@ import {
   getScoresByTypingTest,
   getScoresByUserAndTypingTest,
   getScoresByUserAndTypingTestAndDate,
+  getPastScoresByUserAndDifficulty,
   createNewScore,
 } from "../db/scores";
 
@@ -73,6 +74,22 @@ export const retrieveScoresByUserAndTypingTestAndDate = async (
       req.params.userId,
       req.params.typingTestId,
       currentDate
+    );
+    return res.status(200).json(scores);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(400);
+  }
+};
+
+export const retrieveScoresByUserAndDifficulty = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  try {
+    const scores = await getPastScoresByUserAndDifficulty(
+      req.params.username,
+      req.params.difficulty
     );
     return res.status(200).json(scores);
   } catch (error) {
