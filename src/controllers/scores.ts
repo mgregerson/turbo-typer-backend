@@ -6,6 +6,7 @@ import {
   getScoresByUserAndTypingTest,
   getScoresByUserAndTypingTestAndDate,
   getPastScoresByUserAndDifficulty,
+  getTopFiveScoresByDifficulty,
   createNewScore,
 } from "../db/scores";
 
@@ -93,6 +94,21 @@ export const retrieveScoresByUserAndDifficulty = async (
     );
     return res.status(200).json(scores);
   } catch (error) {
+    console.log(error);
+    return res.sendStatus(400);
+  }
+};
+
+export const retrieveTopFiveScoresByDifficulty = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  try {
+    console.log("i got to controllers");
+    const scores = await getTopFiveScoresByDifficulty();
+    return res.status(200).json(scores);
+  } catch (error) {
+    console.log("i got here");
     console.log(error);
     return res.sendStatus(400);
   }

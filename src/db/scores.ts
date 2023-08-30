@@ -39,6 +39,35 @@ export const getScoresByUser = (user: string) => scoreModel.find({ user });
 export const getScoresByTypingTest = (typingTest: string) =>
   scoreModel.find({ typingTest });
 
+export const getTopFiveScoresByDifficulty = async () => {
+  console.log("here in db");
+  const difficultyScores: Record<string, any[]> = {}; // Add type annotation
+
+  // Define the difficulty levels you want to query
+  const difficulties = ["hard"];
+
+  for (const difficulty of difficulties) {
+    console.log(difficulty, "found difficulty");
+
+    // Skip 'leaderboard' as a difficulty value
+    if (difficulty === "leaderboard") {
+      continue;
+    }
+
+    const scores = await mongoose
+      .model("Score", scoreSchema)
+      .find({ difficulty })
+      .sort({ wordsPerMinute: -1 })
+      .limit(5)
+      .populate("typingTest")
+      .populate("user");
+
+    difficultyScores[difficulty] = scores;
+  }
+
+  return difficultyScores;
+};
+
 export const getScoresByUserAndTypingTest = async (
   user: string,
   typingTest: string

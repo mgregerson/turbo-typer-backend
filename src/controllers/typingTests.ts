@@ -42,7 +42,6 @@ export const retrieveRandomTypingTestByDifficulty = async (
 ) => {
   try {
     const { difficulty } = req.params;
-    console.log("got here baby");
     const typingTest = await getRandomTypingTestByDifficulty(difficulty);
     return res.status(200).json(typingTest);
   } catch (error) {
